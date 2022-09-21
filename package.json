@@ -1,0 +1,28 @@
+{
+  "name": "odin-binary-tree",
+  "version": "1.0.0",
+  "description": "Implementation of a binary search tree for Odin Project",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "webpack",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sbusenba/odin-binary-tree.git"
+  },
+  "author": "Steven Busenbarrick",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sbusenba/odin-binary-tree/issues"
+  },
+  "homepage": "https://github.com/sbusenba/odin-binary-tree#readme",
+  "dependencies": {
+    "jest": "^29.0.3",
+    "webpack": "^5.74.0"
+  },
+  "devDependencies": {
+    "prettier": "2.7.1",
+    "webpack-cli": "^4.10.0"
+  }
+}
