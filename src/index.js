@@ -14,4 +14,17 @@ prettyPrint = (node, prefix = "", isLeft = true) => {
 
 prettyPrint(myTree.root());
 myTree.insert(69);
+myTree.insert(70);
+myTree.insert(71);
+myTree.insert(55);
+
 prettyPrint(myTree.root());
+
+myTree.delete(70)
+prettyPrint(myTree.root());
+console.log(myTree.levelOrder())
+console.log(myTree.preOrder())
+console.log(myTree.inOrder())
+console.log(myTree.postOrder())
+myTree.reBalance()
+prettyPrint(myTree.root())
