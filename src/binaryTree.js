@@ -53,23 +53,132 @@ class binaryTree {
 
     recursiveInsert(this.myHead);
   };
+  findLeftmostOnRight=(node) =>{
+    let recFindLeft = (node)=>{
+      if (node.left !=null){
+        return recFindLeft(node.left) 
+      } else if (node.left == null){
+        return node;
+      }
+    }
+    if (node.right != null){
+    return recFindLeft(node.right)
+    }
+  }
+  findParent =(node)=>{
+    let nodeQueue =[this.root()]
+    let recFindParent = (possibleParent)=>{
+      if (possibleParent.left !=null) { 
+        if (node === possibleParent.left){
+          return [possibleParent,'left'] 
+        }else {
+          nodeQueue.push(possibleParent.left)
+        }
+      } 
+      if (possibleParent.right !=null){ 
+        if (node === possibleParent.right){
+        return [possibleParent,'right']
+      } else {
+        nodeQueue.push(possibleParent.right)
+      }
+    }
+
+      return recFindParent(nodeQueue.pop()) 
+  }
+    
+    
+    if (node !=this.myHead){
+      return recFindParent(node)
+    } else {
+      return [null,null];
+
+    }
+  }
+
   delete = (value) => {
     let nodeToDelete = this.find(value)
 
     if ((nodeToDelete.left ==null)&&(nodeToDelete.right == null)){
-      nodeToDelete = null;
+      // find parent node, 
+      let [parentNode,leftRight] = this.findParent(nodeToDelete)
+      //change pointer to null
+      if (leftRight =='left'){
+        parentNode.left = null;
+      }else if (leftRight=='right'){
+        parentNode.right = null;
+      }
     } else if (nodeToDelete.left ==null){
-      //correct this
-
+      // find parent node,
+      let [parentNode,leftRight] = this.findParent(nodeToDelete)
+      //change pointer to nodeToDelete.right
+      if (leftRight =='left'){
+        parentNode.left = nodeToDelete.right;
+      }else if (leftRight=='right'){
+        parentNode.right = nodeToDelete.right;
+      }
     }else if (nodeToDelete.right ==null){
-      
-    } else {
-        //find furthest left node
+     // find parent node, 
+     let [parentNode,leftRight] = this.findParent(nodeToDelete)
+     //change pointer to nodeToDelete.left
+     if (leftRight =='left'){
+      parentNode.left = nodeToDelete.left;
+    }else if (leftRight=='right'){
+      parentNode.right = nodeToDelete.left;
     }
+    } else {
+        //node with 2 children
+
+        if (nodeToDelete != this.myHead){
+          let leftmostChild = this.findLeftmostOnRight(nodeToDelete)
+          let [parentNode,leftRight] = this.findParent(nodeToDelete)
+          let [leftmostParentNode,leftmostLeftRight] = this.findParent(leftmostChild)
+          console.log(`deleting ${nodeToDelete.data}`)
+          console.log(`node is ${leftRight} child of ${parentNode.data}`)
+          console.log(`leftmost on right is ${leftmostChild.data} `) 
+          console.log(`it is ${leftmostLeftRight} child of ${leftmostParentNode.data}`)
+          if (leftmostChild !== nodeToDelete.right){
+            leftmostChild.right = nodeToDelete.right
+          }
+          if (leftmostChild !== nodeToDelete.left){
+            leftmostChild.left = nodeToDelete.left
+          }
+          if (leftRight =='right') { 
+            parentNode.right = leftmostChild
+          }  else  if (leftRight == 'left') { 
+            parentNode.left = leftmostChild
+          }
+          if (leftmostLeftRight == 'left') {
+            leftmostParentNode.left = null;
+          } else {
+            leftmostParentNode.right = null;
+          } 
+        } else {
+          let leftmostChild = this.findLeftmostOnRight(nodeToDelete)
+          let [leftmostParentNode,leftmostLeftRight] = this.findParent(leftmostChild)
+          console.log(`deleting ${nodeToDelete.data}`)
+          console.log(`leftmost on right is ${leftmostChild.data} `) 
+          console.log(`it is ${leftmostLeftRight} child of ${leftmostParentNode.data}`)
+          if (leftmostChild !== nodeToDelete.right){
+            leftmostChild.right = nodeToDelete.right
+          }
+          if (leftmostChild !== nodeToDelete.left){
+            leftmostChild.left = nodeToDelete.left
+          }
+            this.myHead = leftmostChild
+         
+          if (leftmostLeftRight == 'left') {
+            leftmostParentNode.left = null;
+          } else {
+            leftmostParentNode.right = null;
+        } 
+        }
+      }
 
   };
   find = (value)=>{
     let recursiveFind = (node)=>{
+      if (node == null)
+        return false;
       if (node.data > value){
         return recursiveFind(node.left)
       } else if (node.data < value){
@@ -137,10 +246,32 @@ class binaryTree {
     recPostOrder(this.myHead)
     return postOrderArray
   }
-  isBalanced = ()=>{}
+  isBalanced = ()=>{
+    let recCheckBalance =(node)=>{
+        if ((node.left === null)&&(node.right === null)){
+          return [1,true]; 
+        } else if ((node.left != null)&&(node.right === null)){
+          let [noOfNodes,balanced] = recCheckBalance(node.left)
+          return [1 + noOfNodes,(noOfNodes ==1)? true:false]
+        } else if ((node.left === null)&&(node.right != null)){
+          let [noOfNodes,balanced] = recCheckBalance(node.right)
+          return [1 + noOfNodes,(noOfNodes ==1)? true:false]
+        } else if ((node.left != null)&&(node.right != null)) {
+          let [noOfNodesRight,rightBalanced] = recCheckBalance(node.right)
+          let [noOfNodesLeft,leftBalanced] = recCheckBalance(node.left)
+          if ((noOfNodesLeft-noOfNodesRight<=1)&&
+            ((noOfNodesRight-noOfNodesLeft>=-1))){
+              return[noOfNodesLeft+noOfNodesRight +1,(rightBalanced&&leftBalanced)]
+            } else return [noOfNodesLeft+noOfNodesRight +1,false]
+
+        }
+    }
+    let [noOfNodes,balanced] = recCheckBalance(this.myHead)
+    return balanced;
+
+  }
   reBalance = ()=>{
     this.myHead = this.buildTree(this.inOrder())
-
   }
 }
 module.exports = binaryTree;
