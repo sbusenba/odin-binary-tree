@@ -1,5 +1,11 @@
 const binaryTree = require("./binaryTree");
-let myArray = [0, 1, 2, 8, 4, 5, 7, 6, 3, 3, 3];
+let myArray = [];
+fillRandoms=(number)=>{
+  for (let i = 0;i<number; i++){
+  myArray.push(parseInt(Math.random()*1000))
+  }
+}
+fillRandoms(100)
 let myTree = new binaryTree(myArray);
 
 prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -13,14 +19,18 @@ prettyPrint = (node, prefix = "", isLeft = true) => {
 };
 
 prettyPrint(myTree.root());
+console.log(myTree.isBalanced())
 myTree.insert(69);
 myTree.insert(70);
 myTree.insert(71);
 myTree.insert(55);
-
+myTree.insert(9);
+myTree.insert(10);
+myTree.insert(11);
+myTree.insert(15);
 prettyPrint(myTree.root());
+console.log(myTree.isBalanced())
 
-myTree.delete(70)
 prettyPrint(myTree.root());
 console.log(myTree.levelOrder())
 console.log(myTree.preOrder())
@@ -28,3 +38,4 @@ console.log(myTree.inOrder())
 console.log(myTree.postOrder())
 myTree.reBalance()
 prettyPrint(myTree.root())
+console.log(myTree.isBalanced())
