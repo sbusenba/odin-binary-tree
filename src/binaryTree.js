@@ -53,225 +53,278 @@ class binaryTree {
 
     recursiveInsert(this.myHead);
   };
-  findLeftmostOnRight=(node) =>{
-    let recFindLeft = (node)=>{
-      if (node.left !=null){
-        return recFindLeft(node.left) 
-      } else if (node.left == null){
+  findLeftmostOnRight = (node) => {
+    let recFindLeft = (node) => {
+      if (node.left != null) {
+        return recFindLeft(node.left);
+      } else if (node.left == null) {
         return node;
       }
+    };
+    if (node.right != null) {
+      return recFindLeft(node.right);
     }
-    if (node.right != null){
-    return recFindLeft(node.right)
-    }
-  }
-  findParent =(node)=>{
-    let nodeQueue =[this.root()]
-    let recFindParent = (possibleParent)=>{
-      if (possibleParent.left !=null) { 
-        if (node === possibleParent.left){
-          return [possibleParent,'left'] 
-        }else {
-          nodeQueue.push(possibleParent.left)
+  };
+  findParent = (node) => {
+    let nodeQueue = [this.root()];
+    let recFindParent = (possibleParent) => {
+      if (possibleParent.left != null) {
+        if (node === possibleParent.left) {
+          return [possibleParent, "left"];
+        } else {
+          nodeQueue.push(possibleParent.left);
         }
-      } 
-      if (possibleParent.right !=null){ 
-        if (node === possibleParent.right){
-        return [possibleParent,'right']
-      } else {
-        nodeQueue.push(possibleParent.right)
       }
-    }
+      if (possibleParent.right != null) {
+        if (node === possibleParent.right) {
+          return [possibleParent, "right"];
+        } else {
+          nodeQueue.push(possibleParent.right);
+        }
+      }
 
-      return recFindParent(nodeQueue.pop()) 
-  }
-    
-    
-    if (node !=this.myHead){
-      return recFindParent(node)
+      return recFindParent(nodeQueue.pop());
+    };
+
+    if (node != this.myHead) {
+      return recFindParent(node);
     } else {
-      return [null,null];
-
+      return [null, null];
     }
-  }
+  };
 
   delete = (value) => {
-    let nodeToDelete = this.find(value)
+    let nodeToDelete = this.find(value);
 
-    if ((nodeToDelete.left ==null)&&(nodeToDelete.right == null)){
-      // find parent node, 
-      let [parentNode,leftRight] = this.findParent(nodeToDelete)
+    if (nodeToDelete.left == null && nodeToDelete.right == null) {
+      // find parent node,
+      let [parentNode, leftRight] = this.findParent(nodeToDelete);
       //change pointer to null
-      if (leftRight =='left'){
+      if (leftRight == "left") {
         parentNode.left = null;
-      }else if (leftRight=='right'){
+      } else if (leftRight == "right") {
         parentNode.right = null;
       }
-    } else if (nodeToDelete.left ==null){
+    } else if (nodeToDelete.left == null) {
       // find parent node,
-      let [parentNode,leftRight] = this.findParent(nodeToDelete)
+      let [parentNode, leftRight] = this.findParent(nodeToDelete);
       //change pointer to nodeToDelete.right
-      if (leftRight =='left'){
+      if (leftRight == "left") {
         parentNode.left = nodeToDelete.right;
-      }else if (leftRight=='right'){
+      } else if (leftRight == "right") {
         parentNode.right = nodeToDelete.right;
       }
-    }else if (nodeToDelete.right ==null){
-     // find parent node, 
-     let [parentNode,leftRight] = this.findParent(nodeToDelete)
-     //change pointer to nodeToDelete.left
-     if (leftRight =='left'){
-      parentNode.left = nodeToDelete.left;
-    }else if (leftRight=='right'){
-      parentNode.right = nodeToDelete.left;
-    }
+    } else if (nodeToDelete.right == null) {
+      // find parent node,
+      let [parentNode, leftRight] = this.findParent(nodeToDelete);
+      //change pointer to nodeToDelete.left
+      if (leftRight == "left") {
+        parentNode.left = nodeToDelete.left;
+      } else if (leftRight == "right") {
+        parentNode.right = nodeToDelete.left;
+      }
     } else {
-        //node with 2 children
+      //node with 2 children
 
-        if (nodeToDelete != this.myHead){
-          let leftmostChild = this.findLeftmostOnRight(nodeToDelete)
-          let [parentNode,leftRight] = this.findParent(nodeToDelete)
-          let [leftmostParentNode,leftmostLeftRight] = this.findParent(leftmostChild)
-          console.log(`deleting ${nodeToDelete.data}`)
-          console.log(`node is ${leftRight} child of ${parentNode.data}`)
-          console.log(`leftmost on right is ${leftmostChild.data} `) 
-          console.log(`it is ${leftmostLeftRight} child of ${leftmostParentNode.data}`)
-          if (leftmostChild !== nodeToDelete.right){
-            leftmostChild.right = nodeToDelete.right
-          }
-          if (leftmostChild !== nodeToDelete.left){
-            leftmostChild.left = nodeToDelete.left
-          }
-          if (leftRight =='right') { 
-            parentNode.right = leftmostChild
-          }  else  if (leftRight == 'left') { 
-            parentNode.left = leftmostChild
-          }
-          if (leftmostLeftRight == 'left') {
-            leftmostParentNode.left = null;
-          } else {
-            leftmostParentNode.right = null;
-          } 
+      if (nodeToDelete != this.myHead) {
+        let leftmostChild = this.findLeftmostOnRight(nodeToDelete);
+        let [parentNode, leftRight] = this.findParent(nodeToDelete);
+        let [leftmostParentNode, leftmostLeftRight] =
+          this.findParent(leftmostChild);
+        console.log(`deleting ${nodeToDelete.data}`);
+        console.log(`node is ${leftRight} child of ${parentNode.data}`);
+        console.log(`leftmost on right is ${leftmostChild.data} `);
+        console.log(
+          `it is ${leftmostLeftRight} child of ${leftmostParentNode.data}`
+        );
+        if (leftmostChild !== nodeToDelete.right) {
+          leftmostChild.right = nodeToDelete.right;
+        }
+        if (leftmostChild !== nodeToDelete.left) {
+          leftmostChild.left = nodeToDelete.left;
+        }
+        if (leftRight == "right") {
+          parentNode.right = leftmostChild;
+        } else if (leftRight == "left") {
+          parentNode.left = leftmostChild;
+        }
+        if (leftmostLeftRight == "left") {
+          leftmostParentNode.left = null;
         } else {
-          let leftmostChild = this.findLeftmostOnRight(nodeToDelete)
-          let [leftmostParentNode,leftmostLeftRight] = this.findParent(leftmostChild)
-          console.log(`deleting ${nodeToDelete.data}`)
-          console.log(`leftmost on right is ${leftmostChild.data} `) 
-          console.log(`it is ${leftmostLeftRight} child of ${leftmostParentNode.data}`)
-          if (leftmostChild !== nodeToDelete.right){
-            leftmostChild.right = nodeToDelete.right
-          }
-          if (leftmostChild !== nodeToDelete.left){
-            leftmostChild.left = nodeToDelete.left
-          }
-            this.myHead = leftmostChild
-         
-          if (leftmostLeftRight == 'left') {
-            leftmostParentNode.left = null;
-          } else {
-            leftmostParentNode.right = null;
-        } 
+          leftmostParentNode.right = null;
+        }
+      } else {
+        let leftmostChild = this.findLeftmostOnRight(nodeToDelete);
+        let [leftmostParentNode, leftmostLeftRight] =
+          this.findParent(leftmostChild);
+        console.log(`deleting ${nodeToDelete.data}`);
+        console.log(`leftmost on right is ${leftmostChild.data} `);
+        console.log(
+          `it is ${leftmostLeftRight} child of ${leftmostParentNode.data}`
+        );
+        if (leftmostChild !== nodeToDelete.right) {
+          leftmostChild.right = nodeToDelete.right;
+        }
+        if (leftmostChild !== nodeToDelete.left) {
+          leftmostChild.left = nodeToDelete.left;
+        }
+        this.myHead = leftmostChild;
+
+        if (leftmostLeftRight == "left") {
+          leftmostParentNode.left = null;
+        } else {
+          leftmostParentNode.right = null;
         }
       }
-
+    }
   };
-  find = (value)=>{
-    let recursiveFind = (node)=>{
-      if (node == null)
-        return false;
-      if (node.data > value){
-        return recursiveFind(node.left)
-      } else if (node.data < value){
-        return recursiveFind(node.right)
-      } else if (node.data === value){
+  find = (value) => {
+    let recursiveFind = (node) => {
+      if (node == null) return false;
+      if (node.data > value) {
+        return recursiveFind(node.left);
+      } else if (node.data < value) {
+        return recursiveFind(node.right);
+      } else if (node.data === value) {
         return node;
       }
-    }
-    return recursiveFind(this.myHead)
-  }
-  levelOrder = ()=>{
-    let  nodeQueue = [this.myHead]
-    let levelOrderArray = []
-    while (nodeQueue.length >= 1){
-      let node = nodeQueue.shift()
-      levelOrderArray.push(node.data)
-      if (node.left != null){
-        nodeQueue.push(node.left)
-      } 
-      if (node.right != null){
-        nodeQueue.push(node.right)
+    };
+    return recursiveFind(this.myHead);
+  };
+  levelOrder = () => {
+    let nodeQueue = [this.myHead];
+    let levelOrderArray = [];
+    while (nodeQueue.length >= 1) {
+      let node = nodeQueue.shift();
+      levelOrderArray.push(node.data);
+      if (node.left != null) {
+        nodeQueue.push(node.left);
+      }
+      if (node.right != null) {
+        nodeQueue.push(node.right);
       }
     }
     return levelOrderArray;
-  }
-  preOrder = ()=>{
-    let preOrderArray=[]
-    let recPreOrder = (node) =>{
-      preOrderArray.push(node.data)
-      if (node.left !=null){
-        recPreOrder(node.left)
+  };
+  preOrder = () => {
+    let preOrderArray = [];
+    let recPreOrder = (node) => {
+      preOrderArray.push(node.data);
+      if (node.left != null) {
+        recPreOrder(node.left);
       }
-      if (node.right!=null){
-        recPreOrder(node.right)
+      if (node.right != null) {
+        recPreOrder(node.right);
       }
-    }
-    recPreOrder(this.myHead)
-    return preOrderArray
-  }
-  inOrder = ()=>{
-    let inOrderArray=[]
-    let recInOrder = (node) =>{
-      if (node.left !=null){
-        recInOrder(node.left)
+    };
+    recPreOrder(this.myHead);
+    return preOrderArray;
+  };
+  inOrder = () => {
+    let inOrderArray = [];
+    let recInOrder = (node) => {
+      if (node.left != null) {
+        recInOrder(node.left);
       }
-      inOrderArray.push(node.data)
-      if (node.right!=null){
-        recInOrder(node.right)
+      inOrderArray.push(node.data);
+      if (node.right != null) {
+        recInOrder(node.right);
       }
-    }
-    recInOrder(this.myHead)
+    };
+    recInOrder(this.myHead);
     return inOrderArray;
-  }
-  postOrder = ()=>{
-    let postOrderArray=[]
-    let recPostOrder = (node) =>{
-      if (node.left !=null){
-        recPostOrder(node.left)
+  };
+  postOrder = () => {
+    let postOrderArray = [];
+    let recPostOrder = (node) => {
+      if (node.left != null) {
+        recPostOrder(node.left);
       }
-      if (node.right!=null){
-        recPostOrder(node.right)
+      if (node.right != null) {
+        recPostOrder(node.right);
       }
-      postOrderArray.push(node.data)
-    }
-    recPostOrder(this.myHead)
-    return postOrderArray
-  }
-  isBalanced = ()=>{
-    let recCheckBalance =(node)=>{
-        if ((node.left === null)&&(node.right === null)){
-          return [1,true]; 
-        } else if ((node.left != null)&&(node.right === null)){
-          let [noOfNodes,balanced] = recCheckBalance(node.left)
-          return [1 + noOfNodes,(noOfNodes ==1)? true:false]
-        } else if ((node.left === null)&&(node.right != null)){
-          let [noOfNodes,balanced] = recCheckBalance(node.right)
-          return [1 + noOfNodes,(noOfNodes ==1)? true:false]
-        } else if ((node.left != null)&&(node.right != null)) {
-          let [noOfNodesRight,rightBalanced] = recCheckBalance(node.right)
-          let [noOfNodesLeft,leftBalanced] = recCheckBalance(node.left)
-          if ((noOfNodesLeft-noOfNodesRight<=1)&&
-            ((noOfNodesRight-noOfNodesLeft>=-1))){
-              return[noOfNodesLeft+noOfNodesRight +1,(rightBalanced&&leftBalanced)]
-            } else return [noOfNodesLeft+noOfNodesRight +1,false]
-
-        }
-    }
-    let [noOfNodes,balanced] = recCheckBalance(this.myHead)
+      postOrderArray.push(node.data);
+    };
+    recPostOrder(this.myHead);
+    return postOrderArray;
+  };
+  isBalanced = () => {
+    let recCheckBalance = (node) => {
+      if (node.left === null && node.right === null) {
+        return [1, true];
+      } else if (node.left != null && node.right === null) {
+        let [noOfNodes, balanced] = recCheckBalance(node.left);
+        return [1 + noOfNodes, noOfNodes == 1 ? true : false];
+      } else if (node.left === null && node.right != null) {
+        let [noOfNodes, balanced] = recCheckBalance(node.right);
+        return [1 + noOfNodes, noOfNodes == 1 ? true : false];
+      } else if (node.left != null && node.right != null) {
+        let [noOfNodesRight, rightBalanced] = recCheckBalance(node.right);
+        let [noOfNodesLeft, leftBalanced] = recCheckBalance(node.left);
+        if (
+          noOfNodesLeft - noOfNodesRight <= 1 &&
+          noOfNodesRight - noOfNodesLeft >= -1
+        ) {
+          return [
+            noOfNodesLeft + noOfNodesRight + 1,
+            rightBalanced && leftBalanced,
+          ];
+        } else return [noOfNodesLeft + noOfNodesRight + 1, false];
+      }
+    };
+    let [noOfNodes, balanced] = recCheckBalance(this.myHead);
     return balanced;
-
-  }
-  reBalance = ()=>{
-    this.myHead = this.buildTree(this.inOrder())
-  }
+  };
+  reBalance = () => {
+    this.myHead = this.buildTree(this.inOrder());
+  };
+  depth = (node) => {
+    //distance to root
+    let distance = 0;
+    let nodeDepth = 0;
+    let recursiveFind = (nodes) => {
+      distance++;
+      let children = [];
+      nodes.forEach((searchNode) => {
+        if (node === searchNode.data) {
+          nodeDepth = distance;
+          children = [];
+          return distance;
+        } else {
+          if (searchNode.left != null) {
+            children.push(searchNode.left);
+          }
+          if (searchNode.right != null) {
+            children.push(searchNode.right);
+          }
+        }
+      });
+      if (children.length > 0) {
+        return recursiveFind(children);
+      }
+      return nodeDepth;
+    };
+    return recursiveFind([this.myHead]);
+  };
+  height = (node) => {
+    let distance = -1;
+    let recursiveFind = (nodes) => {
+      distance++;
+      let children = [];
+      nodes.forEach((searchNode) => {
+        if (searchNode.left != null) {
+          children.push(searchNode.left);
+        }
+        if (searchNode.right != null) {
+          children.push(searchNode.right);
+        }
+      });
+      if (children.length > 0) {
+        return recursiveFind(children);
+      }
+      return distance;
+    };
+    return recursiveFind([this.find(node)]);
+  };
 }
 module.exports = binaryTree;
