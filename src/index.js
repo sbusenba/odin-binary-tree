@@ -1,11 +1,11 @@
 const binaryTree = require("./binaryTree");
 let myArray = [];
-fillRandoms=(number)=>{
-  for (let i = 0;i<number; i++){
-  myArray.push(parseInt(Math.random()*1000))
+fillRandoms = (number) => {
+  for (let i = 0; i < number; i++) {
+    myArray.push(parseInt(Math.random() * 1000));
   }
-}
-fillRandoms(100)
+};
+fillRandoms(10);
 let myTree = new binaryTree(myArray);
 
 prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -19,23 +19,24 @@ prettyPrint = (node, prefix = "", isLeft = true) => {
 };
 
 prettyPrint(myTree.root());
-console.log(myTree.isBalanced())
-myTree.insert(69);
-myTree.insert(70);
-myTree.insert(71);
-myTree.insert(55);
-myTree.insert(9);
-myTree.insert(10);
-myTree.insert(11);
-myTree.insert(15);
+console.log(myTree.isBalanced());
+console.log(myTree.levelOrder());
+console.log(myTree.preOrder());
+console.log(myTree.postOrder());
+console.log(myTree.inOrder());
+myTree.insert(101);
+myTree.insert(102);
+myTree.insert(103);
+myTree.insert(104);
+myTree.insert(105);
+myTree.insert(106);
+myTree.insert(107);
+myTree.insert(108);
 prettyPrint(myTree.root());
-console.log(myTree.isBalanced())
-
+console.log(myTree.isBalanced());
+myTree.reBalance();
 prettyPrint(myTree.root());
-console.log(myTree.levelOrder())
-console.log(myTree.preOrder())
-console.log(myTree.inOrder())
-console.log(myTree.postOrder())
-myTree.reBalance()
-prettyPrint(myTree.root())
-console.log(myTree.isBalanced())
+console.log(myTree.levelOrder());
+console.log(myTree.preOrder());
+console.log(myTree.postOrder());
+console.log(myTree.inOrder());
